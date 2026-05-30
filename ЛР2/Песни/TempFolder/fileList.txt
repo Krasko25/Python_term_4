@@ -1,0 +1,6 @@
+file '07. ZA HANDO [3 55].mp3'
+file '10. Troll [3 27].mp3'
+file '11. L no Kako [2 58].mp3'
+file '12. I'm So Sorry [3 50].mp3'
+file '13. Near no Theme [4 12].mp3'
+file '14. Mello [3 33].mp3'
