@@ -1,35 +1,23 @@
-# Задан путь к директории с музыкальными файлами (в названии
-# которых нет номеров, а только названия песен) и текстовый файл,
-# хранящий полный список песен с номерами и названиями в виде строк
-# формата «01. Freefall [6:12]». Напишите скрипт, который корректирует
-# имена файлов в директории на основе текста списка песен.
-import os
+# Напишите скрипт, который позволяет ввести с клавиатуры имя
+# текстового файла, найти в нем с помощью регулярных выражений все
+# подстроки определенного вида, в соответствии с вариантом. Например,
+# для варианта № 1 скрипт должен вывести на экран следующее:
+# Строка 3, позиция 10 : найдено '11-05-2014'
+# Строка 12, позиция 2 : найдено '23-11-2014'
+# Строка 12, позиция 17 : найдено '23-11-2014'
 
-folder = "Песни"
-filename = folder + "/" + "Song_list.txt"
+# Вариант 5: найдите все номера телефонов – подстроки вида
+# «(000)1112233» или «(000)111-22-33».
+import re
+
+
+filename = input("Введите имя txt файла: ")
+
+# тут -? означает, что дефис не обязателен
+pattern = r"\(\d{3}\)\d{3}-?\d{2}-?\d{2}"
 
 with open(filename, "r", encoding="utf-8") as f:
-    songList = f.read()
-    
-songList = songList.split("\n")
-songListNamesOnly = songList.copy()
-
-for i in range(len(songListNamesOnly)):
-    titleBeginning = songListNamesOnly[i].find(". ") + 2 #индекс начала названия
-    titleEnding = songListNamesOnly[i].find(" [")
-    songListNamesOnly[i] = songListNamesOnly[i][titleBeginning:titleEnding]
-
-songTitles = os.listdir(folder)
-
-for songFileTitleIndex in range(len(songTitles)):
-    for songTitleInTheListIndex in range(len(songListNamesOnly)):
-        if songListNamesOnly[songTitleInTheListIndex].lower() in songTitles[songFileTitleIndex].lower():
-            extention = os.path.splitext(songTitles[songFileTitleIndex])[1] #берём разрешение файла
-            
-            old_path = os.path.join(folder, songTitles[songFileTitleIndex])
-            new_path = os.path.join(folder, songList[songTitleInTheListIndex].strip() + extention)
-            os.rename(old_path, new_path)
-            break
-
-
+    for lineNum, line in enumerate(f, start=1):
+        for match in re.finditer(pattern, line):
+            print(f"Строка {lineNum}, позиция {match.start()} : найдено '{match.group()}'")
         
